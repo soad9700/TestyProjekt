@@ -22,5 +22,23 @@ namespace QuickApp.Tests
         {
             
         }
+        
+        [Test]
+        public void GGetUserByUserNameAsync_WithNotExistingUserId_ShouldReturnFalse()
+        {
+            
+        }
+        
+        [Test]
+        public void GetUserByUserNameAsync_WithNotExistingUserId_ShouldReturnFalse()
+        {
+            
+        }
+        
+        [Test]
+        public void GetUserByEmailAsync_WithNotExistingUserId_ShouldReturnFalse()
+        {
+            
+        }
     }
 }
