@@ -15,15 +15,16 @@ using IdentityServer4.Services;
 using Microsoft.AspNetCore.Identity;
 using DAL.Core;
 using DAL.Models;
+using DAL.Core.Interfaces;
 
 namespace QuickApp.Authorization
 {
     public class ProfileService : IProfileService
     {
-        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IUserManager _userManager;
         private readonly IUserClaimsPrincipalFactory<ApplicationUser> _claimsFactory;
 
-        public ProfileService(UserManager<ApplicationUser> userManager, IUserClaimsPrincipalFactory<ApplicationUser> claimsFactory)
+        public ProfileService(IUserManager userManager, IUserClaimsPrincipalFactory<ApplicationUser> claimsFactory)
         {
             _userManager = userManager;
             _claimsFactory = claimsFactory;
