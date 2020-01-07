@@ -21,4 +21,8 @@
     <ProjectReference Include="..\QuickApp\QuickApp.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\QuickApp\QuickApp.csproj" />
+  </ItemGroup>
+
 </Project>
