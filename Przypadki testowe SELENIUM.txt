@@ -1,9 +1,9 @@
 ########
-TESTOWANA APLIKACJA DOSTÊPNA POD ADRESEM: https://www.ebenmonney.com/
+TESTOWANA APLIKACJA DOSTEPNA POD ADRESEM: https://www.ebenmonney.com/
 ########
 
 
-1. Formularz kontaktowy: Wys³anie formularza z pustym polem "email" - powinien zostaæ wyœwietlony 
-komunikat ¿e pole email jest wymagane oraz komunikat o b³êdzie formularza.
-2. Formularz kontaktowy: Wys³anie formularza z b³êdnym polem "email" - powinien zostaæ wyœwietlony 
-komunikat o b³êdzie pola email oraz komunikat o b³êdzie formularza.
+1. Formularz kontaktowy: Wyslanie formularza z pustym polem "email" - powinien zostac wyswietlony 
+komunikat ze pole email jest wymagane oraz komunikat o bledzie formularza.
+2. Formularz kontaktowy: Wyslanie formularza z blednym polem "email" - powinien zostac wyswietlony 
+komunikat o bledzie pola email oraz komunikat o bledzie formularza.
