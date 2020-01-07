@@ -18,7 +18,7 @@ namespace QuickApp.Tests.Selenium
         }
 
         [Test]
-        public void FillRegisterForm()
+        public void FillRegisterForm_ShouldRegisterNewUserWithRandomData()
         {
             var randomString = Guid.NewGuid().ToString();
             _driver.Navigate().GoToUrl("https://www.ebenmonney.com/wp-login.php?action=register");
@@ -32,6 +32,58 @@ namespace QuickApp.Tests.Selenium
             new WebDriverWait(_driver, TimeSpan.FromMilliseconds(400));
 
             var errMessage = _driver.FindElement(By.ClassName("message")).Displayed;
+
+            Assert.IsTrue(errMessage);
+        }
+
+        [Test]
+        public void FillRegisterForm_ShouldDisplayedError()
+        {
+            _driver.Navigate().GoToUrl("https://www.ebenmonney.com/wp-login.php?action=register");
+            _driver.FindElement(By.Id("user_login")).SendKeys("test");
+            _driver.FindElement(By.Id("user_email")).SendKeys("test@gmail.com");
+
+            new WebDriverWait(_driver, TimeSpan.FromMilliseconds(400));
+
+            _driver.FindElement(By.Id("wp-submit")).Click();
+
+            new WebDriverWait(_driver, TimeSpan.FromMilliseconds(400));
+
+            var errMessage = _driver.FindElement(By.Id("login_error")).Displayed;
+
+            Assert.IsTrue(errMessage);
+        }
+
+        [Test]
+        public void FillRegisterForm_WithEmptyEmail_DisplayError()
+        {
+            _driver.Navigate().GoToUrl("https://www.ebenmonney.com/wp-login.php?action=register");
+            _driver.FindElement(By.Id("user_login")).SendKeys("test");
+
+            new WebDriverWait(_driver, TimeSpan.FromMilliseconds(400));
+
+            _driver.FindElement(By.Id("wp-submit")).Click();
+
+            new WebDriverWait(_driver, TimeSpan.FromMilliseconds(400));
+
+            var errMessage = _driver.FindElement(By.Id("login_error")).Displayed;
+
+            Assert.IsTrue(errMessage);
+        }
+
+        [Test]
+        public void FillRegisterForm_WithEmptyUsername_DisplayError()
+        {
+            _driver.Navigate().GoToUrl("https://www.ebenmonney.com/wp-login.php?action=register");
+            _driver.FindElement(By.Id("user_email")).SendKeys("test@gmail.com");
+
+            new WebDriverWait(_driver, TimeSpan.FromMilliseconds(400));
+
+            _driver.FindElement(By.Id("wp-submit")).Click();
+
+            new WebDriverWait(_driver, TimeSpan.FromMilliseconds(400));
+
+            var errMessage = _driver.FindElement(By.Id("login_error")).Displayed;
 
             Assert.IsTrue(errMessage);
         }

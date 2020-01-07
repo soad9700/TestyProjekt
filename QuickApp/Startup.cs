@@ -151,6 +151,7 @@ namespace QuickApp
 
             // Business Services
             services.AddScoped<IEmailSender, EmailSender>();
+            services.AddScoped<IUserManager, UserManager>();
 
 
             // Repositories

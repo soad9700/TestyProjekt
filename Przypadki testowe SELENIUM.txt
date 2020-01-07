@@ -7,3 +7,11 @@ TESTOWANA APLIKACJA DOSTEPNA POD ADRESEM: https://www.ebenmonney.com/
 komunikat ze pole email jest wymagane oraz komunikat o bledzie formularza.
 2. Formularz kontaktowy: Wyslanie formularza z blednym polem "email" - powinien zostac wyswietlony 
 komunikat o bledzie pola email oraz komunikat o bledzie formularza.
+3. Formularz rejestracyjny: Wyslanie formularza z poprawnymi danymi - użytkownik powinien zostać zarejestrowany 
+wyswietlony komunikat "Registration complete. Please check your email.".
+2. Formularz kontaktowy: Wyslanie formularza z danymi istniejącego już użytkownika - powinien zostac wyswietlony 
+komunikat o bledzie formularza.
+4. Formularz rejestracyjny: Wyslanie formularza z pustym polem "email" - powinien zostac wyswietlony 
+komunikat o bledzie pola email.
+5. Formularz rejestracyjny: Wyslanie formularza z pustym polem "username" - powinien zostac wyswietlony 
+komunikat o bledzie pola username.
