@@ -2,6 +2,10 @@
 TESTOWANA APLIKACJA DOSTEPNA POD ADRESEM: https://www.ebenmonney.com/
 ########
 
+Formularz logowania: 	https://www.ebenmonney.com/wp-login.php
+Formularz rejestracji: 	https://www.ebenmonney.com/wp-login.php?action=register
+Formularz kontaktowy: 	https://www.ebenmonney.com/contact/
+
 
 1. Formularz kontaktowy: Wyslanie formularza z pustym polem "email" - powinien zostac wyswietlony 
 komunikat ze pole email jest wymagane oraz komunikat o bledzie formularza.
@@ -9,9 +13,12 @@ komunikat ze pole email jest wymagane oraz komunikat o bledzie formularza.
 komunikat o bledzie pola email oraz komunikat o bledzie formularza.
 3. Formularz rejestracyjny: Wyslanie formularza z poprawnymi danymi - użytkownik powinien zostać zarejestrowany 
 wyswietlony komunikat "Registration complete. Please check your email.".
-2. Formularz kontaktowy: Wyslanie formularza z danymi istniejącego już użytkownika - powinien zostac wyswietlony 
+4. Formularz kontaktowy: Wyslanie formularza z danymi istniejącego już użytkownika - powinien zostac wyswietlony 
 komunikat o bledzie formularza.
-4. Formularz rejestracyjny: Wyslanie formularza z pustym polem "email" - powinien zostac wyswietlony 
+5. Formularz rejestracyjny: Wyslanie formularza z pustym polem "email" - powinien zostac wyswietlony 
 komunikat o bledzie pola email.
-5. Formularz rejestracyjny: Wyslanie formularza z pustym polem "username" - powinien zostac wyswietlony 
+6. Formularz rejestracyjny: Wyslanie formularza z pustym polem "username" - powinien zostac wyswietlony 
 komunikat o bledzie pola username.
+7. Formularz logowania: Niezalogowany uzytkownik, po wprowadzeniu adresu e-mail lub nazwy uzytkownika (username) oraz hasla (password), a nastepnie kliknieciu przycisku "log in", powinien zostac przeniesiony na strone "My account".
+8. Formularz logowania: Niezalogowany uzytkownik, po wprowadzeniu nieistniejacego adresu e-mail lub nazwy uzytkownika oraz hasla, a nastepnie nacisnieciu przycisku "log-in" powinien otrzymac komunikat "Unknown username. Check again or try your email address.".
+9. Formularz logowania: Niezalogowany uzytkownik, po wprowadzeniu blednych danych logowania (username i password) oraz nacisnieciu przycisku "log-in" powinien zostac na tej samej stronie, pod tym samym adresem URL. 

@@ -60,9 +60,6 @@ namespace QuickApp.Helpers
 
             IFileInfo fileInfo = _hostingEnvironment.ContentRootFileProvider.GetFileInfo(path);
 
-            if (!fileInfo.Exists)
-                throw new FileNotFoundException($"Template file located at \"{path}\" was not found");
-
             using (var fs = fileInfo.CreateReadStream())
             {
                 using (var sr = new StreamReader(fs))

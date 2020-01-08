@@ -153,7 +153,6 @@ namespace QuickApp
             services.AddScoped<IEmailSender, EmailSender>();
             services.AddScoped<IUserManager, UserManager>();
 
-
             // Repositories
             services.AddScoped<IUnitOfWork, HttpUnitOfWork>();
             services.AddScoped<IAccountManager, AccountManager>();
