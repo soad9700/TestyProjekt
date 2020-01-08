@@ -1,14 +1,24 @@
+using DAL;
+using DAL.Core;
+using DAL.Core.Interfaces;
+using DAL.Models;
+using Microsoft.AspNetCore.Identity;
+using Moq;
 using NUnit.Framework;
 
 namespace QuickApp.Tests
 {
     [TestFixture]
-    public class ViewRoleAuthorizationRequirementTests
+    public class AccountManagerTests
     {
+        private AccountManager _accountManager;
+        private Mock<IUserManager> _userManagerMock;
+
         [SetUp]
         public void SetUp()
         {
-            
+            _userManagerMock = new Mock<IUserManager>();
+            _accountManager = new AccountManager(_userManagerMock.Object);
         }
 
         [Test]
@@ -17,6 +27,17 @@ namespace QuickApp.Tests
             
         }
 
+        [Test]
+        public void CreateUserAsync_WithLoginAndPassword_ShouldReturnTrue()
+        {
+            string login = "test";
+            string password = "password123";
+
+            var result = _accountManager.CreateUserAsync(login, password);
+            
+            Assert.IsTrue(result.Result);
+        }
+        
         [Test]
         public void GetUserByIdAsync_WithNotExistingUserId_ShouldReturnFalse()
         {
