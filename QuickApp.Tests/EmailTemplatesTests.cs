@@ -20,6 +20,8 @@ namespace QuickApp.Tests
         public void SetUp()
         {
             _webHostEnvMock = new Mock<IWebHostEnvironment>();
+
+            //On Windows OS needs to be changed
             _fileInfoPath = "/Users/Jakub/RiderProjects/UnitTestsLabsProject/QuickApp/Helpers/Templates/TestEmail.template";
         }
 
@@ -38,13 +40,11 @@ namespace QuickApp.Tests
             _webHostEnvMock.DefaultValue = DefaultValue.Mock;
             var provider = _webHostEnvMock.Object.ContentRootFileProvider;
             var providerMock = Mock.Get(provider);
-
             var fileMock = new PhysicalFileInfo
                 (new FileInfo(_fileInfoPath));
             
             providerMock.Setup(x => x.GetFileInfo(It.IsAny<string>()))
                 .Returns(fileMock);
-            
             EmailTemplates.Initialize(_webHostEnvMock.Object);
             string recipentName = "TestRecipent";
             DateTime testDate = new DateTime(2020, 1, 1);
@@ -63,13 +63,11 @@ namespace QuickApp.Tests
             _webHostEnvMock.DefaultValue = DefaultValue.Mock;
             var provider = _webHostEnvMock.Object.ContentRootFileProvider;
             var providerMock = Mock.Get(provider);
-
             var fileMock = new PhysicalFileInfo
                 (new FileInfo(_fileInfoPath));
             
             providerMock.Setup(x => x.GetFileInfo(It.IsAny<string>()))
                 .Returns(fileMock);
-            
             EmailTemplates.Initialize(_webHostEnvMock.Object);
             string recipentName = "TestRecipent";
             DateTime testDate = new DateTime(2020, 1, 1);
@@ -98,13 +96,11 @@ namespace QuickApp.Tests
             _webHostEnvMock.DefaultValue = DefaultValue.Mock;
             var provider = _webHostEnvMock.Object.ContentRootFileProvider;
             var providerMock = Mock.Get(provider);
-
             var fileMock = new PhysicalFileInfo
                 (new FileInfo(_fileInfoPath));
             
             providerMock.Setup(x => x.GetFileInfo(It.IsAny<string>()))
                 .Returns(fileMock);
-            
             EmailTemplates.Initialize(_webHostEnvMock.Object);
             DateTime testDate = new DateTime(2020, 1, 1);
 
