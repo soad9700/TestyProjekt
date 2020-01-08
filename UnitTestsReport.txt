@@ -1,0 +1,8 @@
+-Stan testów w pliku UnitTestsReport.png
+
+-Stan aplikacji: wszystkie kluczowe funkcjonalnoœæi aplikacji dzia³aj¹
+zgodnie z tym jak zosta³y zaprojektowane.
+-Czêœæ testów nie przechodzi ze wzglêdu 
+na przypadki nie obs³u¿one przez kod.
+-Testy selenium nale¿y skonfigurowaæ dla Chrome i Firefoxa aby
+wszystkie przechodzi³y.
