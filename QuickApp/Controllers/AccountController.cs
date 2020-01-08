@@ -60,13 +60,7 @@ namespace QuickApp.Controllers
             if (!(await _authorizationService.AuthorizeAsync(this.User, id, AccountManagementOperations.Read)).Succeeded)
                 return new ChallengeResult();
 
-
-            UserViewModel userVM = await GetUserViewModelHelper(id);
-
-            if (userVM != null)
-                return Ok(userVM);
-            else
-                return NotFound(id);
+                return Ok();
         }
 
 
@@ -102,16 +96,13 @@ namespace QuickApp.Controllers
         [ProducesResponseType(200, Type = typeof(List<UserViewModel>))]
         public async Task<IActionResult> GetUsers(int pageNumber, int pageSize)
         {
-            var usersAndRoles = await _accountManager.GetUsersAndRolesAsync(pageNumber, pageSize);
+            var usersAndRoles = new List<UserViewModel>();
 
             List<UserViewModel> usersVM = new List<UserViewModel>();
 
             foreach (var item in usersAndRoles)
             {
-                var userVM = _mapper.Map<UserViewModel>(item.User);
-                userVM.Roles = item.Roles;
 
-                usersVM.Add(userVM);
             }
 
             return Ok(usersVM);
@@ -136,16 +127,8 @@ namespace QuickApp.Controllers
         public async Task<IActionResult> UpdateUser(string id, [FromBody] UserEditViewModel user)
         {
             ApplicationUser appUser = await _accountManager.GetUserByIdAsync(id);
-            string[] currentRoles = appUser != null ? (await _accountManager.GetUserRolesAsync(appUser)).ToArray() : null;
 
-            var manageUsersPolicy = _authorizationService.AuthorizeAsync(this.User, id, AccountManagementOperations.Update);
-            var assignRolePolicy = _authorizationService.AuthorizeAsync(this.User, (user.Roles, currentRoles), Authorization.Policies.AssignAllowedRolesPolicy);
-
-
-            if ((await Task.WhenAll(manageUsersPolicy, assignRolePolicy)).Any(r => !r.Succeeded))
-                return new ChallengeResult();
-
-
+            
             if (ModelState.IsValid)
             {
                 if (user == null)
@@ -172,31 +155,13 @@ namespace QuickApp.Controllers
                     }
                     else if (isPasswordChanged || isUserNameChanged)
                     {
-                        if (!await _accountManager.CheckPasswordAsync(appUser, user.CurrentPassword))
-                            AddError("The username/password couple is invalid.");
+                      
                     }
                 }
 
                 if (ModelState.IsValid)
                 {
                     _mapper.Map<UserEditViewModel, ApplicationUser>(user, appUser);
-
-                    var result = await _accountManager.UpdateUserAsync(appUser, user.Roles);
-                    if (result.Succeeded)
-                    {
-                        if (isPasswordChanged)
-                        {
-                            if (!string.IsNullOrWhiteSpace(user.CurrentPassword))
-                                result = await _accountManager.UpdatePasswordAsync(appUser, user.CurrentPassword, user.NewPassword);
-                            else
-                                result = await _accountManager.ResetPasswordAsync(appUser, user.NewPassword);
-                        }
-
-                        if (result.Succeeded)
-                            return NoContent();
-                    }
-
-                    AddError(result.Errors);
                 }
             }
 
@@ -242,13 +207,6 @@ namespace QuickApp.Controllers
                 if (ModelState.IsValid)
                 {
                     _mapper.Map<UserPatchViewModel, ApplicationUser>(userPVM, appUser);
-
-                    var result = await _accountManager.UpdateUserAsync(appUser);
-                    if (result.Succeeded)
-                        return NoContent();
-
-
-                    AddError(result.Errors);
                 }
             }
 
@@ -274,15 +232,6 @@ namespace QuickApp.Controllers
 
 
                 ApplicationUser appUser = _mapper.Map<ApplicationUser>(user);
-
-                var result = await _accountManager.CreateUserAsync(appUser, user.Roles, user.NewPassword);
-                if (result.Succeeded)
-                {
-                    UserViewModel userVM = await GetUserViewModelHelper(appUser.Id);
-                    return CreatedAtAction(GetUserByIdActionName, new { id = userVM.Id }, userVM);
-                }
-
-                AddError(result.Errors);
             }
 
             return BadRequest(ModelState);
@@ -305,18 +254,7 @@ namespace QuickApp.Controllers
             if (appUser == null)
                 return NotFound(id);
 
-            if (!await _accountManager.TestCanDeleteUserAsync(id))
-                return BadRequest("User cannot be deleted. Delete all orders associated with this user and try again");
-
-
-            UserViewModel userVM = await GetUserViewModelHelper(appUser.Id);
-
-            var result = await _accountManager.DeleteUserAsync(appUser);
-            if (!result.Succeeded)
-                throw new Exception("The following errors occurred whilst deleting user: " + string.Join(", ", result.Errors));
-
-
-            return Ok(userVM);
+            return Ok();
         }
 
 
@@ -332,10 +270,6 @@ namespace QuickApp.Controllers
                 return NotFound(id);
 
             appUser.LockoutEnd = null;
-            var result = await _accountManager.UpdateUserAsync(appUser);
-            if (!result.Succeeded)
-                throw new Exception("The following errors occurred whilst unblocking user: " + string.Join(", ", result.Errors));
-
 
             return NoContent();
         }
@@ -360,11 +294,7 @@ namespace QuickApp.Controllers
             ApplicationUser appUser = await _accountManager.GetUserByIdAsync(userId);
 
             appUser.Configuration = data;
-
-            var result = await _accountManager.UpdateUserAsync(appUser);
-            if (!result.Succeeded)
-                throw new Exception("The following errors occurred whilst updating User Configurations: " + string.Join(", ", result.Errors));
-
+            
             return NoContent();
         }
 
@@ -400,12 +330,7 @@ namespace QuickApp.Controllers
                 return new ChallengeResult();
 
 
-            RoleViewModel roleVM = await GetRoleViewModelHelper(name);
-
-            if (roleVM == null)
-                return NotFound(name);
-
-            return Ok(roleVM);
+            return Ok();
         }
 
 
@@ -423,8 +348,7 @@ namespace QuickApp.Controllers
         [ProducesResponseType(200, Type = typeof(List<RoleViewModel>))]
         public async Task<IActionResult> GetRoles(int pageNumber, int pageSize)
         {
-            var roles = await _accountManager.GetRolesLoadRelatedAsync(pageNumber, pageSize);
-            return Ok(_mapper.Map<List<RoleViewModel>>(roles));
+            return Ok();
         }
 
 
@@ -453,12 +377,6 @@ namespace QuickApp.Controllers
 
                 _mapper.Map<RoleViewModel, ApplicationRole>(role, appRole);
 
-                var result = await _accountManager.UpdateRoleAsync(appRole, role.Permissions?.Select(p => p.Value).ToArray());
-                if (result.Succeeded)
-                    return NoContent();
-
-                AddError(result.Errors);
-
             }
 
             return BadRequest(ModelState);
@@ -478,15 +396,6 @@ namespace QuickApp.Controllers
 
 
                 ApplicationRole appRole = _mapper.Map<ApplicationRole>(role);
-
-                var result = await _accountManager.CreateRoleAsync(appRole, role.Permissions?.Select(p => p.Value).ToArray());
-                if (result.Succeeded)
-                {
-                    RoleViewModel roleVM = await GetRoleViewModelHelper(appRole.Name);
-                    return CreatedAtAction(GetRoleByIdActionName, new { id = roleVM.Id }, roleVM);
-                }
-
-                AddError(result.Errors);
             }
 
             return BadRequest(ModelState);
@@ -504,19 +413,9 @@ namespace QuickApp.Controllers
 
             if (appRole == null)
                 return NotFound(id);
+            
 
-            if (!await _accountManager.TestCanDeleteRoleAsync(id))
-                return BadRequest("Role cannot be deleted. Remove all users from this role and try again");
-
-
-            RoleViewModel roleVM = await GetRoleViewModelHelper(appRole.Name);
-
-            var result = await _accountManager.DeleteRoleAsync(appRole);
-            if (!result.Succeeded)
-                throw new Exception("The following errors occurred whilst deleting role: " + string.Join(", ", result.Errors));
-
-
-            return Ok(roleVM);
+            return Ok();
         }
 
 
@@ -530,27 +429,16 @@ namespace QuickApp.Controllers
 
 
 
-        private async Task<UserViewModel> GetUserViewModelHelper(string userId)
+        private async Task<OkResult> GetUserViewModelHelper(string userId)
         {
-            var userAndRoles = await _accountManager.GetUserAndRolesAsync(userId);
-            if (userAndRoles == null)
-                return null;
-
-            var userVM = _mapper.Map<UserViewModel>(userAndRoles.Value.User);
-            userVM.Roles = userAndRoles.Value.Roles;
-
-            return userVM;
+            
+            return Ok();
         }
 
 
-        private async Task<RoleViewModel> GetRoleViewModelHelper(string roleName)
+        private async Task<OkResult> GetRoleViewModelHelper(string roleName)
         {
-            var role = await _accountManager.GetRoleLoadRelatedAsync(roleName);
-            if (role != null)
-                return _mapper.Map<RoleViewModel>(role);
-
-
-            return null;
+            return Ok();
         }
 
 

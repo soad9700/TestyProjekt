@@ -202,11 +202,6 @@ namespace DAL
             if ((await _accountManager.GetRoleByNameAsync(roleName)) == null)
             {
                 ApplicationRole applicationRole = new ApplicationRole(roleName, description);
-
-                var result = await this._accountManager.CreateRoleAsync(applicationRole, claims);
-
-                if (!result.Succeeded)
-                    throw new Exception($"Seeding \"{description}\" role failed. Errors: {string.Join(Environment.NewLine, result.Errors)}");
             }
         }
 
@@ -221,11 +216,6 @@ namespace DAL
                 EmailConfirmed = true,
                 IsEnabled = true
             };
-
-            var result = await _accountManager.CreateUserAsync(applicationUser, roles, password);
-
-            if (!result.Succeeded)
-                throw new Exception($"Seeding \"{userName}\" user failed. Errors: {string.Join(Environment.NewLine, result.Errors)}");
 
 
             return applicationUser;
